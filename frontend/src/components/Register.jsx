@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "../resources/register.css";
 import logo from "../assets/logo.jpg";
-import { toast } from 'react-toastify';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { message } from 'antd'
 
 function Register() {
 
@@ -15,7 +15,7 @@ function Register() {
     email: '',
     dob: '',
     password: '',
-    confirmPassword:'',
+    confirmPassword: '',
     number: '',
     question: '',
     address: '',
@@ -39,16 +39,16 @@ function Register() {
       const response = await axios.post("/api/users/register", formData)
 
       if (response.data.success) {
-        console.log("message ",response.data.message);
-          toast.success(response.data.message);
-           navigate("/")
+        console.log("message ", response.data.message);
+        message.success(response.data.message);
+        navigate("/")
       } else {
-          toast.error(response.data.message);
+        message.error(response.data.message);
       }
-  } catch (error) {
+    } catch (error) {
 
-      toast.error(error.message)
-  }
+      message.error(error.message)
+    }
     console.log(formData);
   }
 
@@ -71,7 +71,7 @@ function Register() {
                 className="form-input"
                 onChange={handleInputChange}
               />
-              <input type="text" name="email" placeholder="Email" className="form-input" onChange={handleInputChange} />
+              <input type="email" name="email" placeholder="Email" className="form-input" onChange={handleInputChange} />
             </div>
             <div className="flex">
               <input
@@ -140,6 +140,7 @@ function Register() {
 
             <button className="btn">Sign Up</button>
           </form>
+          <p>Already have an account? <Link to="/" className="signBtn"> Login now</Link></p>
         </div>
       </div>
     </section>

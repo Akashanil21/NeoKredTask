@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "../resources/login.css";
 import logo from "../assets/logo.jpg";
 import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 function Login() {
 
@@ -30,15 +30,15 @@ function Login() {
 
       if (response.data.success) {
         console.log("message ", response.data.message);
-        localStorage.setItem("token",response.data.data)
-        toast.success(response.data.message);
+        localStorage.setItem("token", response.data.data)
+        message.success(response.data.message);
         navigate("/profile")
       } else {
-        toast.error(response.data.message);
+        message.error(response.data.message);
       }
     } catch (error) {
 
-      toast.error(error.message)
+      message.error(error.message)
     }
     console.log(formData);
   }
@@ -57,7 +57,9 @@ function Login() {
             <input type="text" name="email" placeholder="email" className="form-input" onChange={handleInputChange} />
             <input type="text" name="password" placeholder="password" className="form-input" onChange={handleInputChange} />
             <button className="btn">Log In</button>
+
           </form>
+          <p>Don't have an account? <Link to="/signup" className="signBtn">Sign up now</Link></p>
         </div>
       </div>
     </section>

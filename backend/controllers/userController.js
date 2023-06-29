@@ -19,6 +19,16 @@ const userRegister = async (req, res) => {
             });
         }
 
+        const { name, email, dob, password, confirmPassword, number, question, address, city, state, zip, country } = req.body;
+
+        if (!email || !number || !password || !confirmPassword || !name || !dob || !question || !address || !city || !state || !zip || !country) {
+            return res.send({
+                message: "Please fill in all the required fields",
+                success: false,
+                data: null
+            });
+        }
+
         let Number = req.body.number
         if (Number.toString().length != 10) {
             return res.send({
@@ -97,7 +107,7 @@ const userLogin = async (req, res) => {
         const token = jwt.sign(
             { userId: userExists._id },
             "test",
-            { expiresIn: "1d" }
+            { expiresIn: "5m" }
         );
         res.send({
             message: "User logged in successfully",
