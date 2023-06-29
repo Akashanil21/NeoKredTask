@@ -2,11 +2,11 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+
+
 // Registering a user
 
-const userRegister = async (req,res) =>{
-
-    console.log(req.body);
+const userRegister = async (req, res) => {
 
     try {
 
@@ -67,9 +67,7 @@ const userRegister = async (req,res) =>{
 
 // Login a user
 
-const userLogin = async (req,res) =>{
-
-    console.log("password: ",req.body.password);
+const userLogin = async (req, res) => {
 
     try {
 
@@ -82,8 +80,6 @@ const userLogin = async (req,res) =>{
                 data: null
             })
         }
-
-        console.log("user password: ",userExists.password);
 
         const passwordMatch = await bcrypt.compare(
             req.body.password,
@@ -117,4 +113,55 @@ const userLogin = async (req,res) =>{
     }
 }
 
-module.exports = {userRegister, userLogin};
+// Get each profile
+
+const getProfile = async (req, res) => {
+
+    try {
+
+        const token = req.headers.authorization.split(" ")[1];
+        if (!token) {
+            return res.status(401).send({
+                message: "Authorization failed",
+                success: false
+            })
+        }
+        const decoded = jwt.verify(token, "test")
+
+        req.body.userId = decoded.userId;
+
+        const user = await User.findById(req.body.userId);
+        res.send({
+            message: "User fetched successfully",
+            success: true,
+            data: user,
+        })
+    } catch (error) {
+        res.send({
+            message: error.message,
+            success: false,
+            data: null,
+        })
+    }
+}
+
+// User logout
+
+const userLogout = async (req, res) => {
+
+    try {
+        res.send({
+            message: "Logged out successfully",
+            success: true,
+            data: null
+        })
+    } catch (error) {
+        res.send({
+            message: error.message,
+            success: false,
+            data: null,
+        })
+    }
+}
+
+module.exports = { userRegister, userLogin, getProfile, userLogout };

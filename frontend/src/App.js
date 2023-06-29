@@ -1,5 +1,6 @@
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./components/Register";
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -10,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );
